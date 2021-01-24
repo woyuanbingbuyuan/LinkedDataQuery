@@ -1,0 +1,356 @@
+<!--
+* @project: NetworkGraph
+* @file: index.html
+* @author: dangzhiteng
+* @email: 642212607@qq.com
+* @date: 2019.5.14
+-->
+<!DOCTYPE html>
+<meta charset="utf-8">
+<html>
+<head>
+    {% load staticfiles %}
+    <title>LinkedDataQuery</title>
+    <script type="text/javascript" src="{% static 'js/thirdPart/d3.min.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/thirdPart/saveSvgAsPng.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/thirdPart/jquery-3.3.1.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/thirdPart/smartMenu.js' %}"></script>
+
+    <link rel="stylesheet" href="{% static 'css/font-awesome-4.7.0/css/font-awesome.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'css/smartMenu.css' %}" >
+    <link rel="shortcut icon" href="{% static 'image/ld.ico' %}" type="image/x-icon" />
+</head>
+<body>
+    <svg id="container">
+        <!-- 网络图 -->
+        <g id="network-graph"></g>
+        <!-- 柱状图 -->
+        <g id="bar-graph"></g>  
+    </svg>
+    <div id="top-tool-bar">
+        <div id="logo"></div>
+<!--        <button class="top-menu-item" id="download-demo"><i class="fa fa-download"></i> 下载示例数据</button> -->
+<!--        <button class="top-menu-item" id="upload-data"><i class="fa fa-upload"></i> 上传数据</button> -->
+        <button class="top-menu-item" id="download-data"><i class="fa fa-download"></i> Export Data</button>
+        <button class="top-menu-item" id="download-img"><i class="fa fa-share"></i> Export Image</button>
+        <div id="top-right-bar">
+            <button id="stop-button"><div id="network-status"></div><div id="stop-button-text">Stop Layout</div></button>
+            <!--
+            <div id="search-line-layout">
+                <input type="text" name="" id="search-lineedit">
+                <button id="search-button"><i class="fa fa-search"></i></button>
+            </div>
+            -->
+<!--            <button class="top-tool-button" id="comments-button"><i class="fa fa-comments"></i></button> -->
+            <button class="top-tool-button" id="public-data-button"><i class="fa fa-database"></i></button>
+            <button class="top-tool-button" id="route-button"><i class="fa fa-road"></i></button>
+            <button class="top-tool-button" id="setting-button"><i class="fa fa-gear"></i></button>
+            <button class="top-tool-button" id="screen-button"><i class="fa fa-expand" id="screen-switch"></i></button>
+        </div>  
+    </div>
+    <div id="info-layout">
+        <div id="network-info">
+            <p>
+                <strong>Linked Data Properties:</strong>
+            </p>
+            <p id="node-num"></p>
+            <p id="link-num"></p>
+        </div>
+        <div id="node-info">
+            <p><strong>Node Properties:</strong></p>
+            <p id="node-index"></p>
+            <p id="node-label"></p>
+            <p id="node-name"></p>
+        </div>
+        <div id="link-info">
+            <p><strong>Relation Properties:</strong></p>
+            <p id="link-label"></p>
+            <p id="link-source"></p>
+            <p id="link-target"></p>
+        </div>
+    </div>
+<!-- 
+   <div id="tips-layout">
+        <div id="tips-title">贴心小提示</div>
+        <div id="tips-content"></div>
+        <div id="tips-switch-layout">
+            {% for _ in tip_list %}
+                <div class="tip-switch" id={{ forloop.counter0 }}></div>
+            {% endfor %}
+        </div>
+    </div>
+-->
+<!--
+    <div id="color-layout">
+        <div><i id="color-marker" class="fa fa-map-pin"></i></div>
+        <div id="color-bar"></div>
+    </div>
+-->
+    <div id="left-tool-bar">
+    	<div id="tool-bar">
+	        <button id="zoom-out" title="Zoom Out"><i class="fa fa-plus-circle"></i></button>
+	        <button id="zoom-in" title="Zoom In"><i class="fa fa-minus-circle"></i></button>
+	        <button id="zoom-reset" title="1：1"><i class="fa fa-arrows-h"></i></button>
+	        <button id="rotate" title="Clockwise Rotate"><i class="fa fa-repeat"></i></button>
+	        <button id="rerotate" title="Counter-Clockwise Rotate"><i class="fa fa-undo"></i></button>
+	    </div>
+        <hr />
+	    <div id="show-control-bar">
+	    	<button id="info-show" title="Info Panel" class="high-light"><i class="fa fa-info-circle"></i></button>
+	        <button id="bar-graph-show" title="Column Chart"><i class="fa fa-bar-chart"></i></button>	
+	        <button id="node-button" title="Node Label" class="high-light"><i class="fa fa-dot-circle-o"></i></button>
+			<button id="link-button" title="Relation Label"><i class="fa fa-link"></i></button>
+            <button id="node-menu" title="Node Menu" class="high-light"><i class="fa fa-bars"></i></button>  
+            <button id="marker-button" title="箭头" class="high-light"><i class="fa fa-location-arrow"></i></button> 
+<!--            <button id="tips-button" title="贴心小提示" class="high-light"><i class="fa fa-gratipay"></i></button> -->
+	    </div>
+<!--        <button id="color-button" type=""></button> -->
+    </div>
+    <div id="public-data-box" class="right-box" >
+        <table id="public-data-table">
+            <tbody>
+                <tr class="box-title">
+                    <td colspan=2>Public Data</td>
+                </tr>
+                <tr>
+                    <td>Uploader</td>
+                    <td>Data Name</td>
+                </tr>
+                {% for file in file_list %}
+                <tr>
+                    <td>Anoymous</td>
+                    <td class="public_data"><u>{{ file }}</u></td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+<!--
+    <div id="comments-box" class="right-box">
+        <div id="comments-layout">
+            {% for comment in comment_list %}
+            <div class="comment-item">
+                <div class="comment-user-title">
+                    <div class="comment-user-image" style="background: url(static/image/userhead/{{ comment.0 }}.jpg); background-size: cover;"></div><div class="comment-user-name">{{ comment.0 }}</div>
+                </div>
+                <div class="comment-content">{{ comment.1 }}</div>
+                <div class="comment-time">{{ comment.2 }}</div>
+            </div>
+            {% endfor %}
+        </div>
+        <div id="submit-layout">
+            <div id="username-layout">昵称：<span id="username">anonymous</span></div>
+            <div id="textarea-layout">
+                <textarea id="user-comment"></textarea>
+                <span><i id="font-count">0</i>/200</span>
+            </div>
+            <button id="comment-button" class="submit">提交</button>
+        </div>
+    </div>
+-->
+    <div id="setting-box" class="right-box">
+        <table id="setting-table">
+            <tbody>
+				<tr class="box-title">
+		            <td colspan=2>Settings</td>
+		        </tr>
+                <tr>
+                    <td>Repulsion</td>
+                    <td>
+                        <input type="range" name="points" id="repulsion" min="100" max="3000" step="10" value="300" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Gravitation</td>
+                    <td>
+                        <input type="range" name="points" id="gravitation" min="0" max="1" step="0.05" value="0.5" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Node Scaling</td>
+                    <td>
+                        <input type="range" name="points" id="nodes-size" min="0" max="10" step="0.1" value="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Relation Scaling</td>
+                    <td>
+                        <input type="range" name="points" id="links-width" min="0" max="10" step="0.1" value="1" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Relation Type</td>
+                    <td>
+                        <button id="slink-button" class="link-type high-light" value="slink"></button>
+                        <button id="clink-button" class="link-type" value="clink"></button>
+                        <button id="hlink-button" class="link-type" value="hlink"></button>
+                        <button id="vlink-button" class="link-type" value="vlink"></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Layout Style</td>
+                    <td>
+                        <button id="force-button" class="layout-style high-light" value="0"><i class="fa fa-snowflake-o"></i></button>
+                        <button id="radius-button" class="layout-style" value="1"><i class="fa fa-circle-o"></i></button>
+                        <button id="tree-button" class="layout-style" value="2"><i class="fa fa-tree"></i></button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Analysis Mode</td>
+                    <td>
+                        <button id="analyse-mode" title="Switch Analysis Mode">Data&nbsp&nbsp&nbsp&nbsp<i id="analyse-switch" class="fa fa-toggle-off"></i>&nbsp&nbsp&nbsp&nbspScene</button>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Background Color</td>
+                    <td>
+                        <input type="color" name="" id="background-color-button" value="#027080">
+                    </td>
+                </tr>
+                <tr>
+                    <td>Background Image</td>
+                    <td>
+                        <select id="background-select">
+                            <option>Unselected</option>
+                            {% for background in background_list %}
+                                <option>{{ background }}</option> 
+                            {% endfor %}
+                        </select>
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+				<tr class="box-title">
+		            <td colspan=2>Node Settings</td>
+		        </tr>
+                <tr>
+                    <td>Node Size</td>
+                    <td>
+                        <input type="range" name="points" id="node-size" min="0" max="100" step="1" value="15" />
+                    </td>
+                </tr>
+                <tr>
+                    <td>Node Opacity</td>
+                    <td>
+                        <input type="range" name="points" id="node-opacity" min="0" max="1" step="0.01" value="1" />
+                    </td>
+                </tr>
+            </tbody>
+            <tbody>
+				<tr class="box-title">
+		            <td colspan=2>Relation Settings</td>
+		        </tr>
+                <tr>
+                    <td>Relation Width</td>
+                    <td>
+                        <input type="range" name="points" id="link-width" min="0" max="20" step="0.1" value="1" />
+                    </td>
+                </tr>        
+            </tbody>
+        </table>
+    </div>
+    <div id="route-box" class="right-box">
+        <table id="route-table">
+            <tbody>
+				<tr class="box-title">
+		            <td colspan=2>Path Finding</td>
+		        </tr>
+                <tr>
+                    <td>Source-node-index</td>
+                    <td>
+                        <input type="text" id="source-node-index"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td>Target-node-index</td>
+                    <td>
+                        <input type="text" id="target-node-index"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td id="route-button-line" colspan="2"><button id="begin-find">Start Find</button></td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+    <div id="labels-bar">
+        <ul></ul>
+    </div>
+<!--    <div id="github"><a id="github_link" href="https://github.com/iaboaix/NetworkGraph.git"></a></div> -->
+    <!--
+    <div id="upload-layout">
+        <div id="upload-top-layout">
+            <div id="file-title">导入json数据</div>
+            <div id="file-close">×</div>
+        </div>
+        <div id="info-file">
+            <div id="file-item">
+                <div id="file-name"></div>
+                <div id="file-state"></div>
+            </div>
+        </div>
+        <input type="file" id="file-input" enctype="multiple/form-data" method="post"/>
+        <button id="select-file" class="file-button">选择文件</button>
+        <div>
+            <button id="upload-button" class="file-button">上传</button>
+            <button id="close-button" class="file-button">关闭</button>
+        </div>
+    </div>
+    -->
+    <table id="attr-table">
+        <tbody>
+            <tr><td colspan=2>Node Config</td></tr>
+            <tr>
+                <td>Type:</td>
+                <td>
+<!--                    <select id="select-type" onchange="typeConstraint()"> -->
+                    <select id="select-type">
+                        <option value="integer">Integer</option>
+                        <option value="double">Double</option>
+                        <option value="string">String</option>
+                        <option value="time">Time</option>
+                        <option value="wkt">Wkt</option>
+                    </select>
+                </td>
+            </tr>
+            <tr>
+                <td>ID:</td>
+                <td><input type="text" id="create-id"></td>
+            </tr>
+            <tr>
+                <td>Label:</td> 
+                <td><input type="text" id="create-label"></td>
+            </tr>
+            <tr>
+                <td>Name:</td>
+                <td><input type="text" id="create-name"></td>
+<!--                <td><input type="text" id="create-label" onkeypress="keyPress(this)" onkeyup="keyUp(this)" onblur="onBlur(this)"></td> -->
+            </tr>
+            <tr>
+                <td colspan=2>
+                    <div>
+                        <button id="create-confirm" class="attr-button">Confirm</button>
+                        <button id="create-cancel" class="attr-button">Cancel</button>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <script type="text/javascript">
+    	var data = {{ default_data|safe }};
+<!--        var tip_list = {{ tip_list|safe }}; -->
+        var background_list = {{ background_list|safe }};
+    </script>
+    <script type="text/javascript" src="{% static 'js/index.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tools.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/showControl.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/upOrDownload.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/transform.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/barGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/selectFunction.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/treeGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/networkGraph.js' %}"></script>
+    <script type="text/javascript" src="{% static 'js/tools/route.js' %}"></script>
+</body>
+</html>

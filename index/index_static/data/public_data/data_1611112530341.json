@@ -1,0 +1,65 @@
+{
+    "nodes": [
+        {
+            "id": 0,
+            "name": "RemoteSensingSatellite",
+            "label": "remotesensingsatellite",
+            "size": 36
+        },
+        {
+            "id": 1,
+            "name": "Sensor",
+            "label": "sensor",
+            "size": 36
+        },
+        {
+            "id": 2,
+            "name": "SpatiotemporalSet",
+            "label": "spatiotemporalset",
+            "size": 36
+        },
+        {
+            "id": 3,
+            "name": "ThemeParameters",
+            "label": "themeparameters",
+            "size": 36
+        },
+        {
+            "id": 4,
+            "name": "WeatherForecast",
+            "label": "weatherforecast",
+            "size": 36
+        },
+        {
+            "id": 5,
+            "name": "Commercial",
+            "label": "commercial",
+            "size": 36
+        },
+        {
+            "id": "6",
+            "label": "CloudCover",
+            "name": "80",
+            "size": 36
+        },
+        {
+            "id": "7",
+            "label": "Parameter",
+            "name": "Soil Moisture",
+            "size": 36
+        },
+        {
+            "id": "8",
+            "label": "StartTime",
+            "name": "2020-07-01T12:00:00",
+            "size": 36
+        },
+        {
+            "id": "9",
+            "label": "Geometry",
+            "name": "POLYGON((114.172868 30.376718, 114.640971 30.376718, 114.640971 30.693490, 114.172868 30.693490, 114.172868 30.376718))",
+            "size": 36
+        }
+    ],
+    "links": []
+}

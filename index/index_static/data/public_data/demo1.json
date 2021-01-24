@@ -1,0 +1,12 @@
+{	"nodes": [
+			{"id": 0, "name": "RemoteSensingSatellite", "label": "remotesensingsatellite"},
+			{"id": 1, "name": "Sensor", "label": "sensor"},
+			{"id": 2, "name": "SpatiotemporalSet", "label": "spatiotemporalset"},
+			{"id": 3, "name": "ThemeParameters", "label": "themeparameters"},
+			{"id": 4, "name": "WeatherForecast", "label": "weatherforecast"},
+			{"id": 5, "name": "Commercial", "label": "commercial"}
+			], 
+
+		"links": [
+		]
+}

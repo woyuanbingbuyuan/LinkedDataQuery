@@ -1,0 +1,23 @@
+<html>
+<head>
+<title>test</title>
+<script type="text/javascript">
+        function changeTitle() {
+            document.getElementById("divTitle").innerHTML = document.getElementById("cars").value;
+        }
+    </script>
+</head>
+<body>
+
+<form>
+<div id="divTitle" style="border:solid 1px red; width:200px;height:50px;"></div>
+<select id="cars" name="cars" onchange="changeTitle();">
+    <option value="Volvo">Volvo</option>
+    <option value="saab">Saab</option>
+    <option value="fiat" selected="selected">Fiat</option>
+    <option value="audi">Audi</option>
+</select>
+</form>
+
+</body>
+</html>

@@ -1,0 +1,70 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>test</title>
+<script type="text/javascript">
+        function keyPress(ob) {
+		/*console.log(ob.value);*/
+			 if (!ob.value.match(/^[\+\-]?\d*?\.?\d*?$/)) ob.value = ob.t_value; 
+			 else ob.t_value = ob.value; 
+			 if (ob.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/)) ob.o_value = ob.value;
+		}
+
+		function keyUp(ob) {
+			 if (!ob.value.match(/^[\+\-]?\d*?\.?\d*?$/)) ob.value = ob.t_value; 
+			 else ob.t_value = ob.value; 
+			 if (ob.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?)?$/)) ob.o_value = ob.value;
+		}
+
+		function onBlur(ob) {
+			if(!ob.value.match(/^(?:[\+\-]?\d+(?:\.\d+)?|\.\d*?)?$/)) ob.value = ob.o_value;
+			else{
+				if(ob.value.match(/^\.\d+$/)) ob.value = 0 + ob.value;
+				if(ob.value.match(/^\.$/)) ob.value = 0; 
+				ob.o_value = ob.value
+			};
+		}
+    </script>
+</head>
+<body>
+
+<table id="attr-table">
+	<tbody>
+		<tr><td colspan=2>Node Config</td></tr>
+		<tr>
+			<td>Type:</td>
+			<td>
+				<select id="select-type" onchange="typeConstraint()">
+					<option value="integer">Integer</option>
+					<option value="double">Double</option>
+					<option value="string">String</option>
+					<option value="time">Time</option>
+					<option value="wkt">Wkt</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>ID:</td>
+			<td><input type="text" id="create-id"></td>
+		</tr>
+		<tr>
+			<td>Label:</td> 
+			<td><input type="text" id="create-label" onkeypress="keyPress(this)" onkeyup="keyUp(this)" onblur="onBlur(this)"></td>
+		</tr>
+		<tr>
+			<td>Name:</td>
+			<td><input type="text" id="create-name"></td>
+		</tr>
+		<tr>
+			<td colspan=2>
+				<div>
+					<button id="create-confirm" class="attr-button">Confirm</button>
+					<button id="create-cancel" class="attr-button">Cancel</button>
+				</div>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+</body>
+</html>

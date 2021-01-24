@@ -1,0 +1,37 @@
+﻿{	"nodes": [
+			{"id": 0, "name": "Thing", "label": "Thing"}, 
+			{"id": 1, "name": "Disaster", "label": "disaster"}, 
+			{"id": 2, "name": "Environment", "label": "environment"},
+			{"id": 3, "name": "Resource", "label": "resource"},
+			{"id": 4, "name": "Observation", "label": "observation"},
+			{"id": 5, "name": "NaturalEnvironment", "label": "naturalenvironment"},
+			{"id": 6, "name": "SocialEnvironment", "label": "socialenvironment"},
+			{"id": 7, "name": "SocialResource", "label": "socialresource"},
+			{"id": 8, "name": "ObservationResource", "label": "observationresource"},
+			{"id": 9, "name": "ObservationRequirements", "label": "observationrequirements"},
+			{"id": 10, "name": "Waterway", "label": "waterway"},
+			{"id": 11, "name": "WeatherForecast", "label": "weatherforecast"},
+			{"id": 12, "name": "AdministrativeDivision", "label": "administrativedivision"},
+			{"id": 13, "name": "Accommodation", "label": "accommodation"},
+			{"id": 14, "name": "Commercial", "label": "commercial"},
+			{"id": 15, "name": "Education", "label": "education"},
+			{"id": 16, "name": "Entertainment", "label": "entertainment"},
+			{"id": 17, "name": "Industrial", "label": "industrial"},
+			{"id": 18, "name": "Sustenance", "label": "sustenance"},
+			{"id": 19, "name": "Aeroway", "label": "aeroway"},
+			{"id": 20, "name": "Bridge", "label": "bridge"},
+			{"id": 21, "name": "Emergency", "label": "emergency"},
+			{"id": 22, "name": "Highway", "label": "highway"},
+			{"id": 23, "name": "Power", "label": "power"},
+			{"id": 24, "name": "Station", "label": "station"},
+			{"id": 25, "name": "Track", "label": "track"},
+			{"id": 26, "name": "RemoteSensingSatellite", "label": "remotesensingsatellite"},
+			{"id": 27, "name": "Sensor", "label": "sensor"},
+			{"id": 28, "name": "SpatiotemporalSet", "label": "spatiotemporalset"},
+			{"id": 29, "name": "ThemeType", "label": "themetype"},
+			{"id": 30, "name": "ThemeParameters", "label": "themeparameters"}
+			], 
+
+		"links": [
+		]
+}
